@@ -1,0 +1,23 @@
+version: "3.9"
+
+services:
+  motion-store:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.api
+    ports:
+      - "8090:8090"
+    volumes:
+      - motion_store:/tmp/motion_store
+    environment:
+      - EMBD_SERVICE_URL=http://embedding:9535/extract_embeddings
+    depends_on:
+      - embedding
+
+  embedding:
+    image: motion-embedding-service:latest
+    ports:
+      - "9535:9535"
+
+volumes:
+  motion_store:
